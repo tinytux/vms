@@ -7,7 +7,8 @@
     "hostname": "debian",
     "username": "vagrant",
     "password": "vagrant",
-    "isourl":   "http://cdimage.debian.org/debian-cd/7.8.0/amd64/iso-cd/debian-7.8.0-amd64-netinst.iso",
+    "isofilename":     "debian-7.8.0-amd64-netinst.iso",
+    "isourl":          "http://cdimage.debian.org/debian-cd/7.8.0/amd64/iso-cd/",
     "isochecksumtype": "md5",
     "isochecksum":     "a91fba5001cf0fbccb44a7ae38c63b6e"
   },
@@ -23,7 +24,10 @@
       "disk_size": "{{user `disksize`}}",
       "format": "qcow2",
       "vm_name": "{{user `vmname`}}",
-      "iso_url": "{{user `isourl`}}",
+      "iso_urls": [
+        "{{user `isofilename`}}",
+        "{{user `isourl`}}{{user `isofilename`}}"
+      ], 
       "iso_checksum_type": "{{user `isochecksumtype`}}",
       "iso_checksum": "{{user `isochecksum`}}",
       "output_directory": "output/{{user `vmname`}}",
@@ -60,6 +64,16 @@
         "<wait5><enter>"
       ]
     }
-  ]
+  ],
+  "provisioners": 
+  [
+    {
+      "type": "shell",
+      "inline": [
+        "sleep 30",
+        "sudo apt-get update",
+        "sudo apt-get install -y mc"
+    ]
+  }]
 }
 
