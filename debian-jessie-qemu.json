@@ -65,15 +65,16 @@
       ]
     }
   ],
-  "provisioners": 
-  [
-    {
-      "type": "shell",
-      "inline": [
-        "sleep 30",
-        "sudo apt-get update",
-        "sudo apt-get install -y mc"
+  "provisioners": [{
+    "type": "shell",
+    "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+    "scripts": [
+      "scripts/postinstall.sh"
     ]
+  }],
+  "post-processors": [{
+    "output": "build/{{user `vmname`}}.box",
+    "type": "vagrant"
   }]
 }
 
