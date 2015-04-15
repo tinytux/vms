@@ -1,0 +1,23 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+
+    config.vm.define "debian_jessie_elk" do |node|
+        node.vm.box = "debian-jessie-qemu"
+        # Allocate even more RAM and CPU if possible
+        node.vm.provider :libvirt do |libvirt|
+            libvirt.memory = 4096
+            libvirt.cpus = 2
+
+            libvirt.uri = 'qemu+unix:///system'
+            libvirt.driver = "kvm"
+            libvirt.storage_pool_name = "default"
+        end
+        
+        # Run the provisioning script
+        node.vm.provision :shell, path: "scripts/bootstrap.sh", keep_color: true
+    end
+
+end
+

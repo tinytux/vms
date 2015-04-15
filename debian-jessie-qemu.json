@@ -69,12 +69,16 @@
     "type": "shell",
     "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
     "scripts": [
-      "scripts/postinstall.sh"
+      "scripts/postinstall.sh",
+      "scripts/vagrant.sh",
+      "scripts/cleanup.sh",
+      "scripts/zerofill.sh"
     ]
   }],
   "post-processors": [{
-    "output": "build/{{user `vmname`}}.box",
-    "type": "vagrant"
+    "type": "vagrant",
+    "compression_level": 1,
+    "output": "build/{{user `vmname`}}.box"
   }]
 }
 
