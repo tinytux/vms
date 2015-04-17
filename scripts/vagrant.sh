@@ -16,3 +16,10 @@ echo "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4
 chmod 0600 /home/vagrant/.ssh/authorized_keys
 chown -R vagrant:vagrant /home/vagrant/.ssh
 
+# Fix from https://github.com/mitchellh/vagrant/issues/1673#issuecomment-34040409
+grep -q -E '^mesg n$' /root/.profile && sed -i 's/^mesg n$/tty -s \&\& mesg n/g' /root/.profile && echo 'Fixing Vagrant error about stdin not being a tty..'
+
+# Required for https://github.com/gael-ian/vagrant-bindfs
+apt-get -y install bindfs nfs-common
+
+

@@ -5,7 +5,7 @@
 
 if [[ $# -ne 1 ]]; then
     echo "usage: $0 [vmtemplate.json]"
-    echo -e "\n   example: $0 debian-wheezy-qemu.json\n"
+    echo -e "\n   example: $0 debian-jessie-qemu.json\n"
     exit 1
 fi
 

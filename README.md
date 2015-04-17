@@ -4,6 +4,16 @@ My Virtual Machines
 Automated provisioning powered by packer.io and some shell scripts.
 
 
+# Debian Jessie 8.0 RC2 with Elasic Search, Logstash and Kibana
+
+ - Based on the debian-jessie-qemu.json (see below)
+
+Usage on Debian Wheezy 7.8:
+    $ vagrant plugin install vagrant-bindfs
+    $ cd debian-jessie-elk 
+    $ vagrant up
+
+
 ## Debian Jessie 8.0 RC2
 
 - Install Debian Jessie from debian-jessie-DI-rc2-amd64-netinst.iso using a preseed file
