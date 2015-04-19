@@ -22,6 +22,16 @@ fi
 if [[ ! -e /opt/logstash ]]; then
     apt-get -y install systemd
     dpkg -i ${DEB_FILE}
+
+    # Allow access to the syslog file
+    sed -e "s#^.*LS_CONF_DIR.*#LS_CONF_DIR=/etc/logstash/conf.d#" -i /etc/default/logstash    
+    sed -e "s#^.*LS_USER.*#LS_USER=logstash#" -i /etc/default/logstash
+    echo -e "\nLS_GROUP=adm" >>  /etc/default/logstash
+
+    # Sample configuration for syslog
+    cp /vagrant/logstash-syslog.conf /etc/logstash/conf.d/logstash-syslog.conf
+    
+    service logstash restart
 fi
 
 
