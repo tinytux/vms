@@ -9,6 +9,7 @@ Automated provisioning powered by packer.io and some shell scripts.
  - Based on the debian-jessie-qemu.json (see below)
 
 Usage on Debian Wheezy 7.8:
+    
     $ vagrant plugin install vagrant-bindfs
     $ cd debian-jessie-elk 
     $ vagrant up
