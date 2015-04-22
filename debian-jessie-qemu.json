@@ -7,10 +7,10 @@
     "hostname": "debian",
     "username": "vagrant",
     "password": "vagrant",
-    "isofilename":     "debian-jessie-DI-rc2-amd64-netinst.iso",
-    "isourl":          "http://cdimage.debian.org/cdimage/jessie_di_rc2/amd64/iso-cd/",
+    "isofilename":     "debian-jessie-DI-rc3-amd64-netinst.iso",
+    "isourl":          "http://cdimage.debian.org/cdimage/jessie_di_rc3/amd64/iso-cd/",
     "isochecksumtype": "md5",
-    "isochecksum":     "82d3ff6d2422af72f5e1a82de88c21ea"
+    "isochecksum":     "bfcaac8a13307ac1f2c2c2e34b642d73"
   },
   "builders":
   [
