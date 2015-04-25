@@ -3,7 +3,7 @@
     "vmname":   "debian-jessie-qemu",
     "cpu":      2,
     "ram":      1024,
-    "disksize": 10000,
+    "disksize": 5000,
     "hostname": "debian",
     "username": "vagrant",
     "password": "vagrant",
@@ -69,13 +69,15 @@
     "type": "shell",
     "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
     "scripts": [
-      "scripts/postinstall.sh",
-      "scripts/vagrant.sh"
+      "../scripts/postinstall.sh",
+      "../scripts/vagrant.sh",
+      "../scripts/cleanup.sh",
+      "../scripts/zerofill.sh"
     ]
   }],
   "post-processors": [{
     "type": "vagrant",
-    "compression_level": 0,
+    "compression_level": 1,
     "output": "output/{{user `vmname`}}.box"
   }]
 }

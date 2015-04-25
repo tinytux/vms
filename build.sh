@@ -5,15 +5,20 @@
 
 if [[ $# -ne 1 ]]; then
     echo "usage: $0 [vmtemplate.json]"
-    echo -e "\n   example: $0 debian-jessie-qemu.json\n"
+    echo -e "\n   example: $0 qemu/debian-jessie.json\n"
     exit 1
 fi
 
-FILE=${1}
-if [[ ! -f ${FILE} ]]; then
-    echo "File not found: >${FILE}<"
+if [[ ! -f ${1} ]]; then
+    echo "File not found: >${1}<"
     exit 1
 fi
+FILEDIR=$(cd "$(dirname -- "${1}")"; printf %s "$PWD")
+FILE=${FILEDIR}/${1##*/}
+
+OLDDIR=`pwd`
+SCRIPTDIR="$(dirname "${0}")"
+cd ${SCRIPTDIR}/qemu
 
 if [[ ! -f packer/packer ]]; then
     echo "Downloading packer.io..."
@@ -25,5 +30,8 @@ fi
 
 
 ./packer/packer build "${FILE}"
+
+
+cd $OLDDIR
 
 
