@@ -9,9 +9,9 @@ Packer creates a new virtual machine, installs the base operating system from an
 and packs the VM into a Vagrant box. Vagrant can use this box as template to create customized
 virtual machines.
 
-### Debian Jessie 8.0 RC3
+### Debian Jessie 8.0
 
-- Install Debian Jessie from debian-jessie-DI-rc3-amd64-netinst.iso using a preseed file
+- Install Debian Jessie from debian-8.0.0-amd64-netinst.iso using a preseed file
 - en_US.UTF-8 locale with Swiss German keyboard
 
 Usage on Debian Wheezy 7.8:
@@ -36,7 +36,7 @@ Usage on Debian Wheezy 7.8:
 ## Create virtual machines with Vagrant
 
 
-### Debian Jessie 8.0 RC3 with Elasic Search, Logstash and Kibana
+### Debian Jessie 8.0 with Elasic Search, Logstash and Kibana
 
  - Based on the debian-jessie.json (see above)
 
@@ -47,7 +47,7 @@ Usage on Debian Wheezy 7.8:
     $ vagrant up
 
 
-### Debian Jessie 8.0 RC3
+### Debian Jessie 8.0
 
  - Based on the debian-jessie.json (see above)
 
