@@ -10,7 +10,10 @@ fi
 
 cd /vagrant
 
-TAR_FILE="kibana-4.0.2-linux-x64.tar.gz"
+KIBANA_VERSION="4.0.2"
+#KIBANA_VERSION="4.1.0-snapshot"
+
+TAR_FILE="kibana-${KIBANA_VERSION}-linux-x64.tar.gz"
 
 if [[ ! -f ${TAR_FILE} ]]; then
     URL="https://download.elastic.co/kibana/kibana/${TAR_FILE}"
@@ -37,5 +40,5 @@ else
 fi
 
 echo "Elastic: http://${MY_IP}:9200/_search?pretty"
-echo "Kibana:  http://${MY_IP}:5601"
+echo "Kibana ${KIBANA_VERSION}: http://${MY_IP}:5601"
 
