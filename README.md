@@ -3,44 +3,24 @@ My Virtual Machines
 
 Automated provisioning powered by packer.io and some shell scripts.
 
+## Create a Vagrant base box with Packer
 
-# Debian Jessie 8.0 RC2 with Elasic Search, Logstash and Kibana
+Packer creates a new virtual machine, installs the base operating system from an .iso file
+and packs the VM into a Vagrant box. Vagrant can use this box as template to create customized
+virtual machines.
 
- - Based on the debian-jessie-qemu.json (see below)
+### Debian Jessie 8.0 RC3
 
-Usage on Debian Wheezy 7.8:
-    
-    $ vagrant plugin install vagrant-bindfs
-    $ cd debian-jessie-elk 
-    $ vagrant up
-
-
-## Debian Jessie 8.0 RC2
-
-- Install Debian Jessie from debian-jessie-DI-rc2-amd64-netinst.iso using a preseed file
+- Install Debian Jessie from debian-jessie-DI-rc3-amd64-netinst.iso using a preseed file
 - en_US.UTF-8 locale with Swiss German keyboard
 
 Usage on Debian Wheezy 7.8:
 
     $ git clone https://github.com/tinytux/vms.git
     $ cd vms
-    $ ./build.sh debian-jessie-qemu.json
-    $ virsh --connect qemu:///system list --all | grep -q debian-jessie-qemu && virsh --connect qemu:///system undefine debian-jessie-qemu
-    $ virt-install \
-       --connect qemu:///system \
-       --name "debian-jessie-qemu" \
-       --cpu host \
-       --vcpus 2 \
-       --ram 1024 \
-       --os-type=linux \
-       --os-variant=debianwheezy \
-       --disk path=./output/debian-jessie-qemu/debian-jessie-qemu.qcow2,device=disk,bus=virtio,format=qcow2 \
-       --vnc  \
-       --force \
-       --import
+    $ ./build.sh qemu/debian-jessie.json
 
-
-## Debian Wheezy 7.8
+### Debian Wheezy 7.8
 
 - Install Debian Wheezy from debian-7.8.0-amd64-netinst.iso using a preseed file
 - en_US.UTF-8 locale with Swiss German keyboard
@@ -49,6 +29,32 @@ Usage on Debian Wheezy 7.8:
 
     $ git clone https://github.com/tinytux/vms.git
     $ cd vms
-    $ ./build.sh debian-wheezy-qemu.json
+    $ ./build.sh qemu/debian-wheezy.json
+
+
+
+## Create virtual machines with Vagrant
+
+
+### Debian Jessie 8.0 RC3 with Elasic Search, Logstash and Kibana
+
+ - Based on the debian-jessie.json (see above)
+
+Usage on Debian Wheezy 7.8:
+    
+    $ vagrant plugin install vagrant-bindfs
+    $ cd debian-jessie-elk 
+    $ vagrant up
+
+
+### Debian Jessie 8.0 RC3
+
+ - Based on the debian-jessie.json (see above)
+
+Usage on Debian Wheezy 7.8:
+
+    $ vagrant plugin install vagrant-bindfs
+    $ cd debian-jessie 
+    $ vagrant up
 
 
