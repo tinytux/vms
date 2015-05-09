@@ -1,0 +1,38 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# requirements:
+# sudo apt-get install dnsmasq-base
+
+require 'yaml'
+nodes = YAML.load_file('nodes.yaml')
+ 
+Vagrant.configure(2) do |config|
+    nodes.each do |nodes|
+    
+        config.ssh.username = 'vagrant'
+        config.ssh.password = 'vagrant'
+        config.ssh.insert_key = 'true'
+
+        config.vm.define nodes["name"] do |node|
+            node.vm.box = nodes["box"]
+            node.vm.network "public_network"
+            node.vm.network "private_network", ip: nodes["ip"]
+            node.vm.provider :libvirt do |libvirt|
+                libvirt.memory = nodes["ram"]
+                libvirt.cpus = nodes["cpu"]
+
+                libvirt.uri = 'qemu+unix:///system'
+                libvirt.driver = "kvm"
+                libvirt.storage_pool_name = "default"
+            end
+            
+            ## Share the default `vagrant` folder
+            node.vm.synced_folder ".", "/vagrant", disabled: true
+            #node.vm.synced_folder ".", "/vagrant", type: :nfs, :mount_options => ['nolock,vers=3,udp,noatime']
+            node.bindfs.bind_folder ".", "/vagrant"
+        end
+    
+    end
+end
+
