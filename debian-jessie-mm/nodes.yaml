@@ -3,15 +3,15 @@
   box: debian-jessie-qemu
   ram: 512
   cpu: 1
-  ip: 192.168.121.101
+  ip: 192.168.20.101
 - name: n2
   box: debian-jessie-qemu
   ram: 512
   cpu: 1
-  ip: 192.168.121.102
+  ip: 192.168.20.102
 - name: n3
   box: debian-jessie-qemu
   ram: 512
   cpu: 1
-  ip: 192.168.121.103
+  ip: 192.168.20.103
 

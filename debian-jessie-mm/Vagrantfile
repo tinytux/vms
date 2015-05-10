@@ -3,6 +3,7 @@
 
 # requirements:
 # sudo apt-get install dnsmasq-base
+# sudo ufw disable
 
 require 'yaml'
 nodes = YAML.load_file('nodes.yaml')
@@ -16,8 +17,8 @@ Vagrant.configure(2) do |config|
 
         config.vm.define nodes["name"] do |node|
             node.vm.box = nodes["box"]
-            node.vm.network "public_network"
-            node.vm.network "private_network", ip: nodes["ip"]
+            node.vm.hostname = nodes["name"]
+            node.vm.network "private_network", ip: nodes["ip"], :libvirt__forward_mode => "none", :libvirt__dhcp_enabled => false
             node.vm.provider :libvirt do |libvirt|
                 libvirt.memory = nodes["ram"]
                 libvirt.cpus = nodes["cpu"]
@@ -29,8 +30,8 @@ Vagrant.configure(2) do |config|
             
             ## Share the default `vagrant` folder
             node.vm.synced_folder ".", "/vagrant", disabled: true
-            #node.vm.synced_folder ".", "/vagrant", type: :nfs, :mount_options => ['nolock,vers=3,udp,noatime']
-            node.bindfs.bind_folder ".", "/vagrant"
+            node.vm.synced_folder ".", "/vagrant", type: :nfs, :mount_options => ['nolock,vers=3,udp,noatime']
+            #node.bindfs.bind_folder ".", "/vagrant"
         end
     
     end
