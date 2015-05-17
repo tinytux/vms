@@ -15,6 +15,8 @@ virtual machines.
 - Install Debian Jessie from debian-8.0.0-amd64-netinst.iso using a preseed file
 - en_US.UTF-8 locale with Swiss German keyboard
 
+Usage:
+
     $ git clone https://github.com/tinytux/vms.git
     $ cd vms
     $ ./build.sh qemu/debian-jessie.json
@@ -23,6 +25,8 @@ virtual machines.
 
 - Install Debian Wheezy from debian-7.8.0-amd64-netinst.iso using a preseed file
 - en_US.UTF-8 locale with Swiss German keyboard
+
+Usage:
 
     $ git clone https://github.com/tinytux/vms.git
     $ cd vms
@@ -36,7 +40,7 @@ virtual machines.
 ### Debian Jessie 8.0 multi-machine
 
  - Based on the debian-jessie.json (see above)
- - Node configuration defined in [debian-jessie-mm/nodes.yaml](nodes.yaml)
+ - Node configuration defined in [nodes.yaml](debian-jessie-mm/nodes.yaml)
 
 Create multiple nodes with one command:
     
@@ -48,7 +52,9 @@ Create multiple nodes with one command:
 ### Debian Jessie 8.0 with Elasic Search, Logstash and Kibana
 
  - Based on the debian-jessie.json (see above)
-    
+
+Usage:
+
     $ vagrant plugin install vagrant-bindfs
     $ cd debian-jessie-elk 
     $ vagrant up
@@ -58,8 +64,9 @@ Create multiple nodes with one command:
 
  - Based on the debian-jessie.json (see above)
 
+Usage:
+
     $ vagrant plugin install vagrant-bindfs
     $ cd debian-jessie 
     $ vagrant up
-
 
