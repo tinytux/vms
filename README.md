@@ -2,6 +2,7 @@ My Virtual Machines
 ===================
 
 Automated provisioning powered by packer.io and some shell scripts.
+Tested on a Debian Wheezy 8.0 host.
 
 ## Create a Vagrant base box with Packer
 
@@ -14,8 +15,6 @@ virtual machines.
 - Install Debian Jessie from debian-8.0.0-amd64-netinst.iso using a preseed file
 - en_US.UTF-8 locale with Swiss German keyboard
 
-Usage on Debian Wheezy 7.8:
-
     $ git clone https://github.com/tinytux/vms.git
     $ cd vms
     $ ./build.sh qemu/debian-jessie.json
@@ -24,8 +23,6 @@ Usage on Debian Wheezy 7.8:
 
 - Install Debian Wheezy from debian-7.8.0-amd64-netinst.iso using a preseed file
 - en_US.UTF-8 locale with Swiss German keyboard
-
-Usage on Debian Wheezy 7.8:
 
     $ git clone https://github.com/tinytux/vms.git
     $ cd vms
@@ -36,11 +33,21 @@ Usage on Debian Wheezy 7.8:
 ## Create virtual machines with Vagrant
 
 
+### Debian Jessie 8.0 multi-machine
+
+ - Based on the debian-jessie.json (see above)
+ - Node configuration defined in [debian-jessie-mm/nodes.yaml](nodes.yaml)
+
+Create multiple nodes with one command:
+    
+    $ vagrant plugin install vagrant-bindfs
+    $ cd debian-jessie-mm
+    $ vagrant up
+
+
 ### Debian Jessie 8.0 with Elasic Search, Logstash and Kibana
 
  - Based on the debian-jessie.json (see above)
-
-Usage on Debian Wheezy 7.8:
     
     $ vagrant plugin install vagrant-bindfs
     $ cd debian-jessie-elk 
@@ -50,8 +57,6 @@ Usage on Debian Wheezy 7.8:
 ### Debian Jessie 8.0
 
  - Based on the debian-jessie.json (see above)
-
-Usage on Debian Wheezy 7.8:
 
     $ vagrant plugin install vagrant-bindfs
     $ cd debian-jessie 

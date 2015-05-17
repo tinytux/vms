@@ -6,34 +6,63 @@
 # sudo ufw disable
 
 require 'yaml'
-nodes = YAML.load_file('nodes.yaml')
- 
+require "ipaddr"
+
+
+if ARGV.include?('up')
+    puts "Nodes:"
+end
+
+
+nodelist = YAML.load_file('nodes.yaml')
+ipaddr = ""
+
 Vagrant.configure(2) do |config|
-    nodes.each do |nodes|
-    
-        config.ssh.username = 'vagrant'
-        config.ssh.password = 'vagrant'
-        config.ssh.insert_key = 'true'
+    nodelist.each do |nodes|
+        # (re-)start the ip counter
+        if nodes.has_key?("startip")
+            ipaddr = IPAddr.new nodes["startip"]
+        end
+        
+        numnodes = 1
+        if nodes.has_key?("count")
+            numnodes = nodes["count"]
+        end
+        
+        # create n istances of the current configuration
+        for n in 1..numnodes           
+            hostname = "%s%02d" % [nodes["name"], n]
+            if ARGV.include?('up')
+                puts "" << hostname << " (" <<  ipaddr.to_s << ")"
+            end
+                        
+            config.ssh.username = 'vagrant'
+            config.ssh.password = 'vagrant'
+            config.ssh.insert_key = 'true'
+ 
+            config.vm.define hostname do |node|
+                node.vm.box = nodes["box"]
+                node.vm.hostname = hostname
+                node.vm.network "private_network", ip: ipaddr.to_s, :libvirt__forward_mode => "none", :libvirt__dhcp_enabled => false
+                node.vm.provider :libvirt do |libvirt|
+                    libvirt.memory = nodes["ram"]
+                    libvirt.cpus = nodes["cpu"]
 
-        config.vm.define nodes["name"] do |node|
-            node.vm.box = nodes["box"]
-            node.vm.hostname = nodes["name"]
-            node.vm.network "private_network", ip: nodes["ip"], :libvirt__forward_mode => "none", :libvirt__dhcp_enabled => false
-            node.vm.provider :libvirt do |libvirt|
-                libvirt.memory = nodes["ram"]
-                libvirt.cpus = nodes["cpu"]
-
-                libvirt.uri = 'qemu+unix:///system'
-                libvirt.driver = "kvm"
-                libvirt.storage_pool_name = "default"
+                    libvirt.uri = 'qemu+unix:///system'
+                    libvirt.driver = "kvm"
+                    libvirt.storage_pool_name = "default"
+                end
+                
+                ## Share the default `vagrant` folder
+                node.vm.synced_folder ".", "/vagrant", disabled: true
+                node.vm.synced_folder ".", "/vagrant", type: :nfs, :mount_options => ['nolock,vers=3,udp,noatime']
+                #node.bindfs.bind_folder ".", "/vagrant"
             end
             
-            ## Share the default `vagrant` folder
-            node.vm.synced_folder ".", "/vagrant", disabled: true
-            node.vm.synced_folder ".", "/vagrant", type: :nfs, :mount_options => ['nolock,vers=3,udp,noatime']
-            #node.bindfs.bind_folder ".", "/vagrant"
+            # next IP address
+            ipaddr = ipaddr.succ
         end
-    
+
     end
 end
 
