@@ -7,10 +7,14 @@
     "hostname": "debian",
     "username": "vagrant",
     "password": "vagrant",
-    "isofilename":     "debian-8.0.0-amd64-netinst.iso",
-    "isourl":          "http://cdimage.debian.org/debian-cd/8.0.0/amd64/iso-cd/",
+    "isofilename":     "debian-8.1.0-amd64-netinst.iso",
+    "isourl":          "http://cdimage.debian.org/debian-cd/current/amd64/iso-cd/",
     "isochecksumtype": "md5",
-    "isochecksum":     "d9209f355449fe13db3963571b1f52d4"
+    "isochecksum":     "1a311f9afb68d6365211b13b4342c40b",
+    "http_proxy":       "{{env `http_proxy`}}",
+    "https_proxy":      "{{env `https_proxy`}}",
+    "ftp_proxy":        "{{env `ftp_proxy`}}",
+    "no_proxy":         "{{env `no_proxy`}}"
   },
   "builders":
   [
@@ -18,7 +22,7 @@
       "type": "qemu",
       "accelerator": "kvm",
         "qemuargs": [
-        [ "-m", "{{user `ram`}}m" ],
+        [ "-m", "{{user `ram`}}M" ],
         [ "-smp", "{{user `cpu`}}" ]
       ], 
       "disk_size": "{{user `disksize`}}",
@@ -31,7 +35,6 @@
       "iso_checksum_type": "{{user `isochecksumtype`}}",
       "iso_checksum": "{{user `isochecksum`}}",
       "output_directory": "output/{{user `vmname`}}",
-      "ssh_wait_timeout": "30s",
       "headless": false,
       "http_directory": "http",
       "http_port_min": 10082,
@@ -67,6 +70,13 @@
   ],
   "provisioners": [{
     "type": "shell",
+    "start_retry_timeout": "15m",
+    "environment_vars": [
+      "http_proxy={{user `http_proxy`}}",
+      "https_proxy={{user `https_proxy`}}",
+      "ftp_proxy={{user `ftp_proxy`}}",
+      "no_proxy={{user `no_proxy`}}"
+    ],
     "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
     "scripts": [
       "../scripts/postinstall.sh",

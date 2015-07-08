@@ -8,9 +8,13 @@
     "username": "vagrant",
     "password": "vagrant",
     "isofilename":     "debian-7.8.0-amd64-netinst.iso",
-    "isourl":          "http://cdimage.debian.org/debian-cd/7.8.0/amd64/iso-cd/",
+    "isourl":          "http://cdimage.debian.org/cdimage/archive/7.8.0/amd64/iso-cd/",
     "isochecksumtype": "md5",
-    "isochecksum":     "a91fba5001cf0fbccb44a7ae38c63b6e"
+    "isochecksum":     "a91fba5001cf0fbccb44a7ae38c63b6e",
+    "http_proxy":       "{{env `http_proxy`}}",
+    "https_proxy":      "{{env `https_proxy`}}",
+    "ftp_proxy":        "{{env `ftp_proxy`}}",
+    "no_proxy":         "{{env `no_proxy`}}"
   },
   "builders":
   [
@@ -18,7 +22,7 @@
       "type": "qemu",
       "accelerator": "kvm",
         "qemuargs": [
-        [ "-m", "{{user `ram`}}m" ],
+        [ "-m", "{{user `ram`}}M" ],
         [ "-smp", "{{user `cpu`}}" ]
       ], 
       "disk_size": "{{user `disksize`}}",
@@ -31,7 +35,6 @@
       "iso_checksum_type": "{{user `isochecksumtype`}}",
       "iso_checksum": "{{user `isochecksum`}}",
       "output_directory": "output/{{user `vmname`}}",
-      "ssh_wait_timeout": "30s",
       "headless": false,
       "http_directory": "http",
       "http_port_min": 10082,
@@ -65,15 +68,24 @@
       ]
     }
   ],
-  "provisioners": 
-  [
-    {
-      "type": "shell",
-      "inline": [
-        "sleep 30",
-        "sudo apt-get update",
-        "sudo apt-get install -y mc"
+  "provisioners": [{
+    "type": "shell",
+    "start_retry_timeout": "15m",
+    "environment_vars": [
+      "http_proxy={{user `http_proxy`}}",
+      "https_proxy={{user `https_proxy`}}",
+      "ftp_proxy={{user `ftp_proxy`}}",
+      "no_proxy={{user `no_proxy`}}"
+    ],
+    "inline": [
+      "sleep 30",
+      "sudo apt-get update",
+      "sudo apt-get install -y mc"
     ]
+  }],
+  "post-processors": [{
+    "type": "vagrant",
+    "compression_level": 1,
+    "output": "output/{{user `vmname`}}.box"
   }]
 }
-

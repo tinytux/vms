@@ -28,9 +28,27 @@ if [[ ! -f packer/packer ]]; then
     unzip -d packer packer_0.7.5_linux_amd64.zip
 fi
 
+mount | grep -q "tmpfs on /tmp type tmpfs"
+if [[ $? -eq 0 ]]; then
+    export TMPDIR="`pwd`/tmp_vagrant"
+    echo "tmpfs detected, using current directory for temp files:"
+    mkdir -p $TMPDIR
+    echo "TMPDIR = $TMPDIR"
+fi
 
+echo "Building VM..."
 ./packer/packer build "${FILE}"
 
+echo "Importing box..."
+filename=$(basename $FILE)
+vm_name=${filename%.*}
+vagrant box add --force --clean --name "${vm_name}" output/${vm_name}-qemu.box
+
+mount | grep -q "tmpfs on /tmp type tmpfs"
+if [[ $? -eq 0 ]]; then
+    echo "Cleaning custom TMPDIR ($TMPDIR)"
+    rm -rf $TMPDIR
+fi
 
 cd $OLDDIR
 

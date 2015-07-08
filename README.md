@@ -2,7 +2,7 @@ My Virtual Machines
 ===================
 
 Automated provisioning powered by packer.io and some shell scripts.
-Tested on a Debian Wheezy 8.0 host.
+Tested on a Debian Wheezy 8.1 host.
 
 ## Create a Vagrant base box with Packer
 
@@ -10,10 +10,11 @@ Packer creates a new virtual machine, installs the base operating system from an
 and packs the VM into a Vagrant box. Vagrant can use this box as template to create customized
 virtual machines.
 
-### Debian Jessie 8.0
+### Debian Jessie 8.1
 
-- Install Debian Jessie from debian-8.0.0-amd64-netinst.iso using a preseed file
+- Install Debian Jessie from debian-8.1.0-amd64-netinst.iso using a preseed file
 - en_US.UTF-8 locale with Swiss German keyboard
+- works behind a proxy (use http_proxy, https_proxy, ftp_proxy and no_proxy)
 
 Usage:
 
@@ -36,37 +37,39 @@ Usage:
 
 ## Create virtual machines with Vagrant
 
+Install qemu-kvm, vagrant and the libvirt provider (qemu + kvm):
+    
+    $ wget https://dl.bintray.com/mitchellh/vagrant/vagrant_1.7.2_x86_64.deb
+    $ sudo dpkg -i vagrant_1.7.2_x86_64.deb
+    $ sudo apt-get install virt-manager virt-viewer libvirt-dev qemu-kvm
+    $ vagrant plugin install vagrant-libvirt
+    $ vagrant plugin install vagrant-bindfs
 
-### Debian Jessie 8.0 multi-machine
+### Debian Jessie 8.1 multi-machine
 
  - Based on the debian-jessie.json (see above)
  - Node configuration defined in [nodes.yaml](debian-jessie-mm/nodes.yaml)
 
-Create multiple nodes with one command:
-    
-    $ vagrant plugin install vagrant-bindfs
     $ cd debian-jessie-mm
     $ vagrant up
 
 
-### Debian Jessie 8.0 with Elasic Search, Logstash and Kibana
+### Debian Jessie 8.1 with Elasic Search, Logstash and Kibana
 
  - Based on the debian-jessie.json (see above)
 
 Usage:
 
-    $ vagrant plugin install vagrant-bindfs
     $ cd debian-jessie-elk 
     $ vagrant up
 
 
-### Debian Jessie 8.0
+### Debian Jessie 8.1
 
  - Based on the debian-jessie.json (see above)
 
 Usage:
 
-    $ vagrant plugin install vagrant-bindfs
     $ cd debian-jessie 
     $ vagrant up
 
