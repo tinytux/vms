@@ -1,0 +1,92 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# requirements:
+# sudo apt-get install dnsmasq-base
+# sudo ufw disable
+
+require 'yaml'
+require "ipaddr"
+
+
+if ARGV.include?('up')
+    puts "Nodes:"
+end
+
+
+nodelist = YAML.load_file('nodes.yaml')
+ipaddr = ""
+
+=begin
+# configure all nodes
+nodelist.each do |nodes|
+    ipaddr = IPAddr.new nodes["startip"]
+    # create n istances of the current configuration
+    nodes["count"].times do |n|
+        node_box = nodes["box"]
+        node_hostname = "%s%02d" % [nodes["name"], (n + 1)]
+        node_ip = ipaddr.to_s
+        node_ram = nodes["ram"].to_s
+        node_cpu = nodes["cpu"].to_s
+
+        if ARGV.include?('up')
+            puts "" << node_hostname << " (" <<  node_ip << " - " << node_box << " - " << node_ram << "MB - " <<  node_cpu << "CPU)"
+        end
+
+        # update the IP address for the next instance
+        ipaddr = ipaddr.succ
+    end
+end
+exit
+=end
+
+Vagrant.configure(2) do |config|
+    # configure all nodes
+    nodelist.each do |nodes|
+        ipaddr = IPAddr.new nodes["startip"]
+        # create n istances of the current configuration
+        nodes["count"].times do |n|
+            node_box = nodes["box"]
+            node_hostname = "%s%02d" % [nodes["name"], (n + 1)]
+            node_ip = ipaddr.to_s
+            node_ram = nodes["ram"].to_s
+            node_cpu = nodes["cpu"].to_s
+
+            if ARGV.include?('up')
+                puts "" << node_hostname << " (" <<  node_ip << " - " << node_box << " - " << node_ram << "MB - " <<  node_cpu << "CPU)"
+            end
+
+                # configure one instance
+                config.ssh.username = 'vagrant'
+                config.ssh.password = 'vagrant'
+                config.ssh.insert_key = 'true'
+
+                config.vm.define node_hostname do |node|
+                    node.vm.box = node_box
+                    node.vm.hostname = node_hostname
+                    puts "" << node_hostname << " (" <<  node_ip << ")"
+                    node.vm.network "private_network", ip: node_ip, :libvirt__forward_mode => "none", :libvirt__dhcp_enabled => false
+
+                    node.vm.provider :libvirt do |libvirt|
+                        
+                        libvirt.memory = node_ram
+                        libvirt.cpus = node_cpu
+
+                        libvirt.uri = 'qemu+unix:///system'
+                        libvirt.driver = "kvm"
+                        libvirt.storage_pool_name = "default"
+                    end
+
+                    ## Share the default `vagrant` folder
+                    node.vm.synced_folder ".", "/vagrant", disabled: true
+                    node.vm.synced_folder ".", "/vagrant", type: :nfs, :mount_options => ['nolock,vers=3,udp,noatime']
+                    #node.bindfs.bind_folder ".", "/vagrant"
+                end
+
+
+            # update the IP address for the next instance
+            ipaddr = ipaddr.succ
+        end
+    end
+end
+
