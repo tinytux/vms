@@ -26,6 +26,7 @@ Usage:
 
 - Install Debian Wheezy from debian-7.8.0-amd64-netinst.iso using a preseed file
 - en_US.UTF-8 locale with Swiss German keyboard
+- works behind a proxy (use http_proxy, https_proxy, ftp_proxy and no_proxy)
 
 Usage:
 
