@@ -15,6 +15,8 @@ if [[ ! -f ${1} ]]; then
 fi
 FILEDIR=$(cd "$(dirname -- "${1}")"; printf %s "$PWD")
 FILE=${FILEDIR}/${1##*/}
+filename=$(basename $FILE)
+vm_name=${filename%.*}
 
 OLDDIR=`pwd`
 SCRIPTDIR="$(dirname "${0}")"
@@ -36,13 +38,59 @@ if [[ $? -eq 0 ]]; then
     echo "TMPDIR = $TMPDIR"
 fi
 
+
+echo "Detecting apt-cacher-ng or http_proxy..."
+# Try to find local installation...
+grep -qie "Port:"  /etc/apt-cacher-ng/acng.conf 2>/dev/null
+if [[ $? -eq 0 ]]; then
+    netstat -nl | grep -q "0.0.0.0:3142"
+    if [[ $? -eq 0 ]]; then
+        LOCAL_IP=`/sbin/ifconfig | grep -E "^eth|^w" -A1 | tr -d '\n' | tr -s ' ' | sed 's/--/\n/g' | sed 's/addr://g' \
+| awk '{print $1 " " $7}' | sort | sed "s/  /\t /g" | expand -t 20 | grep -v BROADCAST | sort | head -n1 | cut -d ' ' -f 2`
+        if [[ -z ${LOCAL_IP} ]]; then
+            echo "local apt-cacher-ng: could not detect local IP"
+        else
+            export APT_PROXY="http://${LOCAL_IP}:3142"
+            echo "local apt-cacher-ng: ${APT_PROXY}"
+        fi
+    fi
+else
+    # ... else find the network
+    APT_PROXY_IP=`grep -iR '^[ ]*Acquire::http.*Proxy' /etc/apt/* 2>/dev/null | grep -Eo '(http|https)://[^/"]+' | head -n 1`
+    export APT_PROXY="http://${APT_PROXY_IP}:3142"
+    echo "apt-cacher-ng: ${APT_PROXY}"
+fi
+
+if [[ -z  ${APT_PROXY} ]]; then
+    if [[ !  -z  ${http_proxy} ]]; then
+        # ... else use the http proxy
+        export APT_PROXY=${http_proxy}
+        echo "http_proxy IP: ${APT_PROXY}"
+    fi
+fi
+
+# Add proxy to the preseed file
+cp -v ./http/${vm_name}-preseed.template ./http/${vm_name}-preseed.cfg
+export LATE_COMMAND_DEFAULT=" echo 'vagrant ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/vagrant; "
+if [[ ! -z  ${APT_PROXY} ]]; then
+    echo "Using proxy ${APT_PROXY} in preseed file..."
+    sed -e "s#^.*d-i mirror/http/proxy.*#d-i mirror/http/proxy string ${APT_PROXY}#" -i ./http/${vm_name}-preseed.cfg
+    export LATE_COMMAND="${LATE_COMMAND_DEFAULT} echo 'Acquire::http:proxy \"${APT_PROXY}\";' > /target/etc/apt/apt.conf.d/02proxy;"
+else
+    echo "No proxy detected."
+    export LATE_COMMAND="${LATE_COMMAND_DEFAULT}"
+fi
+echo "${LATE_COMMAND}">>./http/${vm_name}-preseed.cfg
+tail ./http/${vm_name}-preseed.cfg
+
+
 echo "Building VM..."
 ./packer/packer build "${FILE}"
 
-echo "Importing box..."
-filename=$(basename $FILE)
-vm_name=${filename%.*}
-vagrant box add --force --clean --name "${vm_name}" output/${vm_name}-qemu.box
+if [[ $? -eq 0 ]]; then
+    echo "Importing box..."
+    vagrant box add --force --clean --name "${vm_name}" output/${vm_name}-qemu.box
+fi
 
 mount | grep -q "tmpfs on /tmp type tmpfs"
 if [[ $? -eq 0 ]]; then

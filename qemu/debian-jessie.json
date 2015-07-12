@@ -24,7 +24,7 @@
         "qemuargs": [
         [ "-m", "{{user `ram`}}M" ],
         [ "-smp", "{{user `cpu`}}" ]
-      ], 
+      ],
       "disk_size": "{{user `disksize`}}",
       "format": "qcow2",
       "vm_name": "{{user `vmname`}}",
@@ -60,6 +60,7 @@
         "netcfg/get_hostname={{user `hostname`}} ",
         "netcfg/get_domain=local ",
         "fb=false ",
+        "ipv6.disable=1 ",
         "debconf/frontend=noninteractive ",
         "console-setup/ask_detect=false ",
         "console-keymaps-at/keymap=sg <wait>",

@@ -42,7 +42,7 @@ Install qemu-kvm, vagrant and the libvirt provider (qemu + kvm):
     
     $ wget https://dl.bintray.com/mitchellh/vagrant/vagrant_1.7.2_x86_64.deb
     $ sudo dpkg -i vagrant_1.7.2_x86_64.deb
-    $ sudo apt-get install virt-manager virt-viewer libvirt-dev qemu-kvm
+    $ sudo apt-get install virt-manager virt-viewer libvirt-dev qemu-kvm qemu-system
     $ vagrant plugin install vagrant-libvirt
     $ vagrant plugin install vagrant-bindfs
 
