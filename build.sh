@@ -71,25 +71,19 @@ fi
 
 # Add proxy to the preseed file
 cp -v ./http/${vm_name}-preseed.template ./http/${vm_name}-preseed.cfg
-export LATE_COMMAND_DEFAULT=" echo 'vagrant ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/vagrant; "
 if [[ ! -z  ${APT_PROXY} ]]; then
     echo "Using proxy ${APT_PROXY} in preseed file..."
     sed -e "s#^.*d-i mirror/http/proxy.*#d-i mirror/http/proxy string ${APT_PROXY}#" -i ./http/${vm_name}-preseed.cfg
-    export LATE_COMMAND="${LATE_COMMAND_DEFAULT} echo 'Acquire::http:proxy \"${APT_PROXY}\";' > /target/etc/apt/apt.conf.d/02proxy;"
 else
     echo "No proxy detected."
-    export LATE_COMMAND="${LATE_COMMAND_DEFAULT}"
 fi
-echo "${LATE_COMMAND}">>./http/${vm_name}-preseed.cfg
-tail ./http/${vm_name}-preseed.cfg
-
 
 echo "Building VM..."
 ./packer/packer build "${FILE}"
 
 if [[ $? -eq 0 ]]; then
     echo "Importing box..."
-    vagrant box add --force --clean --name "${vm_name}" output/${vm_name}-qemu.box
+    vagrant box add --force --clean --name "${vm_name}-qemu" output/${vm_name}-qemu.box
 fi
 
 mount | grep -q "tmpfs on /tmp type tmpfs"
