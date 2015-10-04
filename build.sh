@@ -3,6 +3,8 @@
 # Build a new VM from scratch, download packer.io binaries if required.
 #
 
+PACKER_VERSION="0.8.6"
+
 if [[ $# -ne 1 ]]; then
     echo "usage: $0 [vmtemplate.json]"
     echo -e "\n   example: $0 qemu/debian-jessie.json\n"
@@ -24,10 +26,10 @@ cd ${SCRIPTDIR}/qemu
 
 if [[ ! -f packer/packer ]]; then
     echo "Downloading packer.io..."
-    if [[ ! -f packer_0.7.5_linux_amd64.zip ]]; then
-        wget https://dl.bintray.com/mitchellh/packer/packer_0.7.5_linux_amd64.zip
+    if [[ ! -f packer_${PACKER_VERSION}_linux_amd64.zip ]]; then
+        wget https://dl.bintray.com/mitchellh/packer/packer_${PACKER_VERSION}_linux_amd64.zip
     fi
-    unzip -d packer packer_0.7.5_linux_amd64.zip
+    unzip -d packer packer_${PACKER_VERSION}_linux_amd64.zip
 fi
 
 mount | grep -q "tmpfs on /tmp type tmpfs"

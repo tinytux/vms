@@ -2,7 +2,7 @@ My Virtual Machines
 ===================
 
 Automated provisioning powered by packer.io and some shell scripts.
-Tested on a Debian Wheezy 8.1 host.
+Tested on a Debian Jessie 8.2 host.
 
 ## Create a Vagrant base box with Packer
 
@@ -10,9 +10,9 @@ Packer creates a new virtual machine, installs the base operating system from an
 and packs the VM into a Vagrant box. Vagrant can use this box as template to create customized
 virtual machines.
 
-### Debian Jessie 8.1
+### Debian Jessie 8.2
 
-- Install Debian Jessie from debian-8.1.0-amd64-netinst.iso using a preseed file
+- Install Debian Jessie from debian-8.2.0-amd64-netinst.iso using a preseed file
 - en_US.UTF-8 locale with Swiss German keyboard
 - works behind a proxy (use http_proxy, https_proxy, ftp_proxy and no_proxy)
 
@@ -22,17 +22,6 @@ Usage:
     $ cd vms
     $ ./build.sh qemu/debian-jessie.json
 
-### Debian Wheezy 7.8
-
-- Install Debian Wheezy from debian-7.8.0-amd64-netinst.iso using a preseed file
-- en_US.UTF-8 locale with Swiss German keyboard
-- works behind a proxy (use http_proxy, https_proxy, ftp_proxy and no_proxy)
-
-Usage:
-
-    $ git clone https://github.com/tinytux/vms.git
-    $ cd vms
-    $ ./build.sh qemu/debian-wheezy.json
 
 
 
@@ -40,11 +29,12 @@ Usage:
 
 Install qemu-kvm, vagrant and the libvirt provider (qemu + kvm):
     
-    $ sudo apt-get install vagrant virt-manager virt-viewer libvirt-dev qemu-kvm qemu-system
+    $ wget https://dl.bintray.com/mitchellh/vagrant/vagrant_1.7.4_x86_64.deb
+    $ sudo dpkg --install vagrant_1.7.4_x86_64.deb
     $ vagrant plugin install vagrant-libvirt
     $ vagrant plugin install vagrant-bindfs
 
-### Debian Jessie 8.1 multi-machine
+### Debian Jessie multi-machine
 
  - Based on the debian-jessie.json (see above)
  - Node configuration defined in [nodes.yaml](debian-jessie-mm/nodes.yaml)
@@ -53,7 +43,7 @@ Install qemu-kvm, vagrant and the libvirt provider (qemu + kvm):
     $ vagrant up
 
 
-### Debian Jessie 8.1 with Elasic Search, Logstash and Kibana
+### Debian Jessie with Elasic Search, Logstash and Kibana
 
  - Based on the debian-jessie.json (see above)
 
@@ -63,7 +53,7 @@ Usage:
     $ vagrant up
 
 
-### Debian Jessie 8.1
+### Debian Jessie
 
  - Based on the debian-jessie.json (see above)
 
