@@ -7,10 +7,11 @@ if [ $(id -u) != 0 ]; then
     echo "ERROR: $0 must be be run as root, not as `whoami`" 2>&1
     exit 1
 fi
+export DEBIAN_FRONTEND=noninteractive
 
-APT_URL="http://packages.elasticsearch.org/elasticsearch/1.5/debian"
+APT_URL="http://packages.elastic.co/elasticsearch/1.7/debian"
 if [[ ! -n "`grep  ${APT_URL} /etc/apt/sources.list`" ]]; then
-    wget --no-check-certificate -qO - https://packages.elasticsearch.org/GPG-KEY-elasticsearch | sudo apt-key add -
+    wget --no-check-certificate -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
     echo "deb ${APT_URL} stable main" | sudo tee -a /etc/apt/sources.list
     apt-get -y update
 fi

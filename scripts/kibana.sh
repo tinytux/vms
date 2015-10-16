@@ -10,8 +10,7 @@ fi
 
 cd /vagrant
 
-KIBANA_VERSION="4.0.2"
-#KIBANA_VERSION="4.1.0-snapshot"
+KIBANA_VERSION="4.1.2"
 
 TAR_FILE="kibana-${KIBANA_VERSION}-linux-x64.tar.gz"
 

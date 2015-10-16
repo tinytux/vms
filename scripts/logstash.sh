@@ -10,7 +10,7 @@ fi
 
 cd /vagrant
 
-DEB_FILE="logstash_1.5.0.rc2-1_all.deb"
+DEB_FILE="logstash_1.5.4-1_all.deb"
 
 if [[ ! -f ${DEB_FILE} ]]; then
     URL="http://download.elastic.co/logstash/logstash/packages/debian/${DEB_FILE}"
