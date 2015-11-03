@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Fill the disk with zero bytes to help Vagrant compact the virtual disk
+# Minimal GNOME installation
 #
 
 if [ $(id -u) != 0 ]; then
@@ -8,6 +8,6 @@ if [ $(id -u) != 0 ]; then
     exit 1
 fi
 
-dd if=/dev/zero of=/EMPTYFILE bs=1M
-rm -f /EMPTYFILE
+apt-get -y install slim gnome-common 
+
 
