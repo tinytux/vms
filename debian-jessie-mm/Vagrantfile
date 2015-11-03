@@ -17,28 +17,6 @@ end
 nodelist = YAML.load_file('nodes.yaml')
 ipaddr = ""
 
-=begin
-# configure all nodes
-nodelist.each do |nodes|
-    ipaddr = IPAddr.new nodes["startip"]
-    # create n istances of the current configuration
-    nodes["count"].times do |n|
-        node_box = nodes["box"]
-        node_hostname = "%s%02d" % [nodes["name"], (n + 1)]
-        node_ip = ipaddr.to_s
-        node_ram = nodes["ram"].to_s
-        node_cpu = nodes["cpu"].to_s
-
-        if ARGV.include?('up')
-            puts "" << node_hostname << " (" <<  node_ip << " - " << node_box << " - " << node_ram << "MB - " <<  node_cpu << "CPU)"
-        end
-
-        # update the IP address for the next instance
-        ipaddr = ipaddr.succ
-    end
-end
-exit
-=end
 
 Vagrant.configure(2) do |config|
     # configure all nodes
@@ -49,11 +27,12 @@ Vagrant.configure(2) do |config|
             node_box = nodes["box"]
             node_hostname = "%s%02d" % [nodes["name"], (n + 1)]
             node_ip = ipaddr.to_s
-            node_ram = nodes["ram"].to_s
-            node_cpu = nodes["cpu"].to_s
+            node_ram = nodes["ram"]
+            node_cpu = nodes["cpu"]
+            node_provision = nodes["provision"]
 
             if ARGV.include?('up')
-                puts "" << node_hostname << " (" <<  node_ip << " - " << node_box << " - " << node_ram << "MB - " <<  node_cpu << "CPU)"
+                puts "" << node_hostname << " (" <<  node_ip << " - " << node_box << " - " << node_ram.to_s << "MB - " <<  node_cpu.to_s << "CPU)"
             end
 
                 # configure one instance
@@ -81,8 +60,18 @@ Vagrant.configure(2) do |config|
                     node.vm.synced_folder ".", "/vagrant", disabled: true
                     node.vm.synced_folder ".", "/vagrant", type: :nfs, :mount_options => ['nolock,vers=3,udp,noatime']
                     #node.bindfs.bind_folder ".", "/vagrant"
-                end
 
+                    # Run the provisioning script(s)
+                    if node_provision != nil then
+                        node_provision.each do |provision_script|
+                            puts " - provision " << provision_script
+                            node.vm.provision :shell, path: provision_script
+                        end
+                    else
+                            puts " - no provision script(s) defined"
+                    end
+
+                end
 
             # update the IP address for the next instance
             ipaddr = ipaddr.succ
