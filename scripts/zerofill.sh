@@ -8,6 +8,8 @@ if [ $(id -u) != 0 ]; then
     exit 1
 fi
 
+DEBIAN_FRONTEND=noninteractive
+
 dd if=/dev/zero of=/EMPTYFILE bs=1M
 rm -f /EMPTYFILE
 

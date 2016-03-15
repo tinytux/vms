@@ -8,6 +8,8 @@ if [ $(id -u) != 0 ]; then
     exit 1
 fi
 
+DEBIAN_FRONTEND=noninteractive
+
 cd /vagrant
 
 DEB_FILE="logstash_1.5.4-1_all.deb"

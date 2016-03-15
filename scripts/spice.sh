@@ -8,5 +8,7 @@ if [ $(id -u) != 0 ]; then
     exit 1
 fi
 
+DEBIAN_FRONTEND=noninteractive
+
 apt-get -y install spice-vdagent xserver-xorg-video-qxl xserver-xorg xinit xfonts-100dpi xfonts-scalable xfonts-75dpi xinput
 

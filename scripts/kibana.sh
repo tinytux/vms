@@ -8,6 +8,8 @@ if [ $(id -u) != 0 ]; then
     exit 1
 fi
 
+DEBIAN_FRONTEND=noninteractive
+
 cd /vagrant
 
 KIBANA_VERSION="4.1.2"
