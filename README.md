@@ -29,8 +29,8 @@ Usage:
 
 Install qemu-kvm, vagrant and the libvirt provider (qemu + kvm):
     
-    $ wget https://dl.bintray.com/mitchellh/vagrant/vagrant_1.7.4_x86_64.deb
-    $ sudo dpkg --install vagrant_1.7.4_x86_64.deb
+    $ wget https://releases.hashicorp.com/vagrant/1.8.1/vagrant_1.8.1_x86_64.deb
+    $ sudo dpkg --install vagrant_1.8.1_x86_64.deb
     $ vagrant plugin install vagrant-libvirt
     $ vagrant plugin install vagrant-bindfs
 
