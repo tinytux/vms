@@ -1,0 +1,32 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+
+    config.vm.define "debian_stretch_gnome" do |node|
+        node.vm.box = "debian-stretch-qemu"
+        # Allocate even more RAM and CPU if possible
+        node.vm.provider :libvirt do |libvirt|
+            libvirt.memory = 4096
+            libvirt.cpus = 2
+            libvirt.cpu_mode = 'host-passthrough'
+    
+            libvirt.uri = 'qemu+unix:///system'
+            libvirt.driver = "kvm"
+            libvirt.video_type = "qxl"
+            libvirt.graphics_type = "spice"
+            libvirt.video_vram = 65536
+            libvirt.storage_pool_name = "default"
+        end
+
+        ## Share the default `vagrant` folder
+        node.vm.synced_folder ".", "/vagrant", type: :nfs
+        
+        # Run the provisioning script
+        node.vm.provision :shell, path: "../scripts/spice.sh"
+        node.vm.provision :shell, path: "../scripts/gnome.sh"
+    end
+    
+
+end
+

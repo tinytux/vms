@@ -419,6 +419,8 @@ d-i grub-installer/choose_bootdev   select /dev/vda
 # installed system (if supported by the bootloader installer).
 # Note: options passed to the installer will be added automatically.
 #d-i debian-installer/add-kernel-opts string nousb
+#--- re-enabling eth0 interface names
+d-i debian-installer/add-kernel-opts string net.ifnames=0 quiet splash biosdevname=0
 
 ### Finishing up the installation
 # During installations from serial console, the regular virtual consoles
@@ -473,5 +475,7 @@ d-i finish-install/reboot_in_progress note
 #d-i preseed/late_command string apt-install zsh; in-target chsh -s /bin/zsh
 
 d-i preseed/late_command string \
- echo 'vagrant ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/vagrant;
+ echo 'vagrant ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/vagrant; \
+ sed 's/quiet/quiet net.ifnames=0 biosdevname=0/g' -i /target/etc/default/grub; \
+ in-target bash -c 'update-grub';
 

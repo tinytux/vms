@@ -11,8 +11,9 @@ fi
 export DEBIAN_FRONTEND=noninteractive
 
 # disable ipv6 - apt-get sometimes tries to connect to IPv6 addresses...
+# re-enable eth0 interface names
 echo "Disabling IPv6 after next reboot..."
-sed -e '/^GRUB_CMDLINE_LINUX_DEFAULT=/s/"$/ ipv6.disable=1"/g' -i /etc/default/grub
+sed -e '/^GRUB_CMDLINE_LINUX_DEFAULT=/s/"$/ ipv6.disable=1 net.ifnames=0 biosdevname=0"/g' -i /etc/default/grub
 update-grub
 
 echo "Updating the system, this takes some time..."
