@@ -48,8 +48,7 @@ grep -qie "Port:"  /etc/apt-cacher-ng/acng.conf 2>/dev/null
 if [[ $? -eq 0 ]]; then
     netstat -nl | grep -q "0.0.0.0:3142"
     if [[ $? -eq 0 ]]; then
-        LOCAL_IP=`/sbin/ifconfig | grep -E "^eth|^w" -A1 | tr -d '\n' | tr -s ' ' | sed 's/--/\n/g' | sed 's/addr://g' \
-| awk '{print $1 " " $7}' | sort | sed "s/  /\t /g" | expand -t 20 | grep -v BROADCAST | sort | head -n1 | cut -d ' ' -f 2`
+        LOCAL_IP=`ip route show | grep -E "dev $(ip route | grep "default via" | cut -d ' ' -f 5)(.*)src " | sed -E "s/(.*) src (.*)$/\2/g" | tr -d ' \n'`
         if [[ -z ${LOCAL_IP} ]]; then
             echo "local apt-cacher-ng: could not detect local IP"
         else
@@ -70,6 +69,26 @@ if [[ -z  ${APT_PROXY} ]]; then
         export APT_PROXY=${http_proxy}
         echo "http_proxy IP: ${APT_PROXY}"
     fi
+fi
+
+if [[ -z  ${LIBVIRT_DEFAULT_URI} ]]; then
+    export LIBVIRT_DEFAULT_URI=qemu:///system
+fi
+echo "LIBVIRT_DEFAULT_URI: ${LIBVIRT_DEFAULT_URI}"
+
+# "vagrant destroy" with provider vagrant-libvirt 0.0.36 can not delete or overwrite
+# the base box image on default storage pool volumes. 
+BOXIMAGE="${vm_name}-qemu_vagrant_box_image_0.img"
+virsh vol-list default | grep -q ${BOXIMAGE} 2>/dev/null
+if [[ $? -eq 0 ]]; then
+    echo "Old box image found: ${BOXIMAGE}"
+    virsh vol-delete --pool default ${BOXIMAGE}
+    if [[ $? -eq 0 ]]; then
+        echo "Can not delete old image. Please run: sudo virsh vol-delete --pool default ${BOXIMAGE}"
+        exit 1
+    fi
+else
+    echo "No old box image not found: ${BOXIMAGE}"
 fi
 
 # Add proxy to the preseed file
