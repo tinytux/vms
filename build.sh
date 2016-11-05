@@ -48,7 +48,7 @@ grep -qie "Port:"  /etc/apt-cacher-ng/acng.conf 2>/dev/null
 if [[ $? -eq 0 ]]; then
     netstat -nl | grep -q "0.0.0.0:3142"
     if [[ $? -eq 0 ]]; then
-        LOCAL_IP=`ip route show | grep -E "dev $(ip route | grep "default via" | cut -d ' ' -f 5)" | grep -o -P '(?<=src ).*' | cut -d ' ' -f 1 | tr -d ' \n'`
+        LOCAL_IP=`ip route show | grep -E "dev $(ip route | grep "default via" | cut -d ' ' -f 5)" | grep -oP "via \K[0-9\.]+" | tr -d ' \n'`
         if [[ -z ${LOCAL_IP} ]]; then
             echo "local apt-cacher-ng: could not detect local IP"
         else
