@@ -1,16 +1,16 @@
 {
   "variables": {
-    "vmname":   "debian-stretch",
+    "vmname":   "debian-jessie",
     "cpu":      "2",
     "ram":      "2048",
     "disksize": "20000",
     "hostname": "debian",
     "username": "vagrant",
     "password": "vagrant",
-    "isofilename":     "debian-stretch-DI-rc1-amd64-netinst.iso",
-    "isourl":          "http://cdimage.debian.org/cdimage/stretch_di_rc1/amd64/iso-cd/",
-    "isochecksumtype": "md5",
-    "isochecksum":     "210b651eb89c451e8c01868ecb16c0ea",
+    "isofilename":     "debian-8.7.1-amd64-netinst.iso",
+    "isourl":          "http://cdimage.debian.org/debian-cd/current/amd64/iso-cd/",
+    "isochecksumtype": "sha512",
+    "isochecksum":     "534795785d2706e64e3a4dff9648fd0302a1272c668a99a81ba3a984695986ac814d8193c5335bd13dce0592fc470eebe9fc4a6c9991f87a6686329a667ac30d",
     "http_proxy":       "{{env `http_proxy`}}",
     "https_proxy":      "{{env `https_proxy`}}",
     "ftp_proxy":        "{{env `ftp_proxy`}}",
@@ -19,14 +19,9 @@
   "builders":
   [
     {
-      "type": "qemu",
-      "accelerator": "kvm",
-        "qemuargs": [
-        [ "-m", "{{user `ram`}}M" ],
-        [ "-smp", "{{user `cpu`}}" ]
-      ],
+      "type": "vmware-iso",
       "disk_size": "{{user `disksize`}}",
-      "format": "qcow2",
+      "format": "vmx",
       "vm_name": "{{user `vmname`}}",
       "iso_urls": [
         "{{user `isofilename`}}",
@@ -39,20 +34,16 @@
       "http_directory": "http",
       "http_port_min": 10082,
       "http_port_max": 10089,
-      "ssh_host_port_min": 2222,
-      "ssh_host_port_max": 2229,
       "shutdown_command": "echo 'halt -p' > shutdown.sh; echo 'vagrant'|sudo -S sh 'shutdown.sh'",
       "ssh_username": "{{user `username`}}",
       "ssh_password": "{{user `password`}}",
       "ssh_port": 22,
       "ssh_wait_timeout": "90m",
-      "net_device": "virtio-net",
-      "disk_interface": "virtio",
       "boot_wait": "5s",
       "boot_command": [
         "<esc><wait>",
         "install ",
-        "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/debian-stretch-preseed.cfg ",
+        "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/debian-jessie-preseed.cfg ",
         "debian-installer=de_CH ",
         "auto ",
         "locale=de_CH ",
@@ -61,7 +52,6 @@
         "netcfg/get_domain=local ",
         "fb=false ",
         "ipv6.disable=1 ",
-        "net.ifnames=0 biosdevname=0 ",
         "debconf/frontend=noninteractive ",
         "console-setup/ask_detect=false ",
         "console-keymaps-at/keymap=sg <wait>",

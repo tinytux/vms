@@ -2,7 +2,7 @@ My Virtual Machines
 ===================
 
 Automated provisioning powered by packer.io and some shell scripts.
-Tested on a Debian Jessie 8.6 host.
+Tested on a Debian Stretch (testing) host.
 
 ## Create a Vagrant base box with Packer
 
@@ -19,17 +19,26 @@ Usage:
     $ cd vms
     $ ./build.sh qemu/debian-stretch.json
     $ ./build.sh qemu/debian-jessie.json
+    $ ./build.sh vmware/debian-stretch.json
+    $ ./build.sh vmware/debian-jessie.json
 
 
 ## Create virtual machines with Vagrant
 
 Install [qemu-kvm](https://wiki.debian.org/KVM), [vagrant](https://www.vagrantup.com/downloads.html) and the libvirt provider (qemu + kvm):
     
-    $ wget https://releases.hashicorp.com/vagrant/1.8.6/vagrant_1.8.6_x86_64.deb
+    $ wget https://releases.hashicorp.com/vagrant/1.9.1/vagrant_1.9.1_x86_64.deb
     $ sudo dpkg --install vagrant_1.8.6_x86_64.deb
     $ vagrant plugin install vagrant-libvirt
     $ vagrant plugin install vagrant-bindfs
 
+
+Install [VMware Workstation for Linux](http://www.vmware.com/products/workstation-for-linux.html) (license required), [vagrant-vmware-workstation](https://www.vagrantup.com/vmware/) plugin (license required) and [vagrant](https://www.vagrantup.com/downloads.html):
+    
+    $ wget https://releases.hashicorp.com/vagrant/1.9.1/vagrant_1.9.1_x86_64.deb
+    $ sudo dpkg --install vagrant_1.9.1_x86_64.deb
+    $ vagrant plugin install vagrant-vmware-workstation
+    $ vagrant plugin install vagrant-bindfs
 
 ### Debian Stretch
 

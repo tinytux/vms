@@ -354,6 +354,14 @@ d-i passwd/user-default-groups string audio cdrom video admin
 # sources.list line will be left commented out
 #d-i apt-setup/local0/key string http://local.server/key
 
+# Scan another CD or DVD?
+apt-cdrom-setup	apt-setup/cdrom/set-first	boolean	false
+# Scan another CD or DVD?
+apt-cdrom-setup	apt-setup/cdrom/set-next	boolean	false
+# Scan another CD or DVD?
+apt-cdrom-setup	apt-setup/cdrom/set-double	boolean	false
+
+
 # By default the installer requires that repositories be authenticated
 # using a known gpg key. This setting can be used to disable that
 # authentication. Warning: Insecure, not recommended.
@@ -396,9 +404,11 @@ d-i grub-installer/with_other_os boolean true
 
 # Due notably to potential USB sticks, the location of the MBR can not be
 # determined safely in general, so this needs to be specified:
-#d-i grub-installer/bootdev  string /dev/sda
+d-i grub-installer/bootdev  string /dev/sda
+
+
 # To install to the first device (assuming it is not a USB stick):
-#d-i grub-installer/bootdev  string default
+#d-i grub-installer/bootdev  string /dev/sda
 
 # Alternatively, if you want to install to a location other than the mbr,
 # uncomment and edit these lines:
@@ -407,7 +417,7 @@ d-i grub-installer/with_other_os boolean true
 #d-i grub-installer/bootdev  string (hd0,1)
 # To install grub to multiple disks:
 #d-i grub-installer/bootdev  string (hd0,1) (hd1,1) (hd2,1)
-d-i grub-installer/choose_bootdev   select /dev/vda
+d-i grub-installer/choose_bootdev   select /dev/sda
 
 # Optional password for grub, either in clear text
 #d-i grub-installer/password password r00tme

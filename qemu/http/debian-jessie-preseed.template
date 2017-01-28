@@ -15,15 +15,16 @@ d-i debian-installer/language string en
 d-i debian-installer/country string CH
 d-i debian-installer/locale string en_US.UTF-8
 # Optionally specify additional locales to be generated.
-#d-i localechooser/supported-locales multiselect en_US.UTF-8, nl_NL.UTF-8
+#d-i localechooser/supported-locales multiselect en_US.UTF-8, en_US.UTF-8
+#d-i	localechooser/preferred-locale	select	de_CH.UTF-8
 
 # Keyboard selection.
 # keymap is an alias for keyboard-configuration/xkb-keymap
-d-i keymap select sg
+d-i	keymap	string	sg
 # d-i keyboard-configuration/toggle select No toggling
-d-i kbd-chooser/method select sg
+d-i	kbd-chooser/method	string	sg
 d-i console-setup/ask_detect boolean false
-d-i console-keymaps-at/keymap select sg
+d-i	console-keymaps-at/keymap	string	sg
 
 ### Network configuration
 # Disable network configuration entirely. This is useful for cdrom
@@ -396,9 +397,11 @@ d-i grub-installer/with_other_os boolean true
 
 # Due notably to potential USB sticks, the location of the MBR can not be
 # determined safely in general, so this needs to be specified:
-#d-i grub-installer/bootdev  string /dev/sda
+d-i grub-installer/bootdev  string /dev/sda
+
+
 # To install to the first device (assuming it is not a USB stick):
-#d-i grub-installer/bootdev  string default
+#d-i grub-installer/bootdev  string /dev/sda
 
 # Alternatively, if you want to install to a location other than the mbr,
 # uncomment and edit these lines:
@@ -407,7 +410,7 @@ d-i grub-installer/with_other_os boolean true
 #d-i grub-installer/bootdev  string (hd0,1)
 # To install grub to multiple disks:
 #d-i grub-installer/bootdev  string (hd0,1) (hd1,1) (hd2,1)
-d-i grub-installer/choose_bootdev   select /dev/vda
+d-i grub-installer/choose_bootdev   select /dev/sda
 
 # Optional password for grub, either in clear text
 #d-i grub-installer/password password r00tme

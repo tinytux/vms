@@ -21,5 +21,5 @@ apt-get clean
 apt-get -y update >/dev/null
 apt-get -y upgrade >/dev/null
 apt-get -y dist-upgrade >/dev/null
-apt-get -y install perl-modules
+apt-get -y install perl-modules mc vim
 

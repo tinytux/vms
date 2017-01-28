@@ -4,7 +4,8 @@
 Vagrant.configure(2) do |config|
 
     config.vm.define "debian_stretch_gnome" do |node|
-        node.vm.box = "debian-stretch-qemu"
+        node.vm.box = "debian-stretch"
+        
         # Allocate even more RAM and CPU if possible
         node.vm.provider :libvirt do |libvirt|
             libvirt.memory = 4096
@@ -19,16 +20,21 @@ Vagrant.configure(2) do |config|
             libvirt.storage_pool_name = "default"
         end
 
+        config.vm.provider "vmware_workstation" do |vmware|
+          vmware.gui = true
+          vmware.vmx["memsize"] = 4096
+          vmware.vmx["numvcpus"] = 2
+        end
+
         ## Share the default `vagrant` folder
         node.vm.synced_folder ".", "/vagrant", type: :nfs
-        
+
         # Run the provisioning script
         node.vm.provision :shell, path: "../scripts/update-apt-proxy.sh"
         node.vm.provision :shell, path: "../scripts/spice.sh"
         node.vm.provision :shell, path: "../scripts/gnome.sh"
 
     end
-    
-
+ 
 end
 

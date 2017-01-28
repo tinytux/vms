@@ -82,7 +82,7 @@ echo "LIBVIRT_DEFAULT_URI: ${LIBVIRT_DEFAULT_URI}"
 
 # "vagrant destroy" with provider vagrant-libvirt 0.0.36 can not delete or overwrite
 # the base box image on default storage pool volumes. 
-BOXIMAGE="${vm_name}-qemu_vagrant_box_image_0.img"
+BOXIMAGE="${vm_name}-vagrant_box_image_0.img"
 which virsh >/dev/null
 if [[ $? -eq 0 ]]; then
     virsh vol-list default | grep -q ${BOXIMAGE} 2>/dev/null
@@ -109,12 +109,22 @@ else
     echo "No proxy detected."
 fi
 
+# qemu: adjust boot disk
+grep -qie "qemuargs" ${FILE} 2>/dev/null
+if [[ $? -eq 0 ]]; then
+    echo "qemu boot disk: /dev/vda"
+    sed -e "s#^.*d-i grub-installer/bootdev .*#d-i grub-installer/bootdev  string /dev/vda#" -i ./http/${vm_name}-preseed.cfg
+    sed -e "s#^.*d-i grub-installer/choose_bootdev .*#d-i grub-installer/choose_bootdev  select /dev/vda#" -i ./http/${vm_name}-preseed.cfg
+else
+    echo "vmware boot disk: /dev/sda"
+fi
+
 echo "Building VM..."
 ./packer/packer build "${FILE}"
 
 if [[ $? -eq 0 ]]; then
     echo "Importing box..."
-    vagrant box add --force --clean --name "${vm_name}-qemu" output/${vm_name}-qemu.box
+    vagrant box add --force --clean --name "${vm_name}" output/${vm_name}.box
 fi
 
 mount | grep -q "tmpfs on /tmp type tmpfs"
