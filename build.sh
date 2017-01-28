@@ -3,7 +3,7 @@
 # Build a new VM from scratch, download packer.io binaries if required.
 #
 
-PACKER_VERSION="0.10.2"
+PACKER_VERSION="0.12.2"
 
 if [[ $# -ne 1 ]]; then
     echo "usage: $0 [vmtemplate.json]"
@@ -59,8 +59,12 @@ if [[ $? -eq 0 ]]; then
 else
     # ... else find the network
     APT_PROXY_IP=`grep -iR '^[ ]*Acquire::http.*Proxy' /etc/apt/* 2>/dev/null | grep -Eo '(http|https)://[^/"]+' | head -n 1`
-    export APT_PROXY="http://${APT_PROXY_IP}:3142"
-    echo "apt-cacher-ng: ${APT_PROXY}"
+    if [[ -z ${APT_PROXY_IP} ]]; then
+        echo "apt proxy: not detected"
+    else
+        export APT_PROXY="http://${APT_PROXY_IP}:3142"
+        echo "apt proxy: ${APT_PROXY}"
+    fi
 fi
 
 if [[ -z  ${APT_PROXY} ]]; then
@@ -79,16 +83,21 @@ echo "LIBVIRT_DEFAULT_URI: ${LIBVIRT_DEFAULT_URI}"
 # "vagrant destroy" with provider vagrant-libvirt 0.0.36 can not delete or overwrite
 # the base box image on default storage pool volumes. 
 BOXIMAGE="${vm_name}-qemu_vagrant_box_image_0.img"
-virsh vol-list default | grep -q ${BOXIMAGE} 2>/dev/null
+which virsh >/dev/null
 if [[ $? -eq 0 ]]; then
-    echo "Old box image found: ${BOXIMAGE}"
-    virsh vol-delete --pool default ${BOXIMAGE}
+    virsh vol-list default | grep -q ${BOXIMAGE} 2>/dev/null
     if [[ $? -eq 0 ]]; then
-        echo "Can not delete old image. Please run: sudo virsh vol-delete --pool default ${BOXIMAGE}"
-        exit 1
+        echo "Old box image found: ${BOXIMAGE}"
+        virsh vol-delete --pool default ${BOXIMAGE}
+        if [[ $? -eq 0 ]]; then
+            echo "Can not delete old image. Please run: sudo virsh vol-delete --pool default ${BOXIMAGE}"
+            exit 1
+        fi
+    else
+        echo "No old box image not found: ${BOXIMAGE}"
     fi
 else
-    echo "No old box image not found: ${BOXIMAGE}"
+    echo "libvirt client 'virsh' not found. Run 'sudo apt-get install libvirt-clients'"
 fi
 
 # Add proxy to the preseed file
