@@ -1,0 +1,77 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# requirements:
+# sudo apt-get install dnsmasq-base
+# sudo ufw disable
+
+require 'yaml'
+require "ipaddr"
+
+
+if ARGV.include?('up')
+    puts "Nodes:"
+end
+
+
+nodelist = YAML.load_file('nodes.yaml')
+ipaddr = ""
+
+
+Vagrant.configure(2) do |config|
+    # configure all nodes
+    nodelist.each do |nodes|
+        ipaddr = IPAddr.new nodes["startip"]
+        # create n istances of the current configuration
+        nodes["count"].times do |n|
+            node_box = nodes["box"]
+            node_hostname = "%s%02d" % [nodes["name"], (n + 1)]
+            node_ip = ipaddr.to_s
+            node_ram = nodes["ram"]
+            node_cpu = nodes["cpu"]
+            node_provision = nodes["provision"]
+
+            if ARGV.include?('up')
+                puts "" << node_hostname << " (" <<  node_ip << " - " << node_box << " - " << node_ram.to_s << "MB - " <<  node_cpu.to_s << "CPU)"
+            end
+
+                # configure one instance
+                config.ssh.username = 'vagrant'
+                config.ssh.password = 'vagrant'
+                config.ssh.insert_key = 'true'
+
+                config.vm.define node_hostname do |node|
+                    node.vm.box = node_box
+                    node.vm.hostname = node_hostname
+                    puts "" << node_hostname << " (" <<  node_ip << ")"
+                    node.vm.network "private_network", ip: node_ip
+
+                    config.vm.provider "vmware_workstation" do |vmware|
+                        vmware.gui = true
+                        vmware.vmx["memsize"] = node_ram
+                        vmware.vmx["numvcpus"] = node_cpu
+                    end
+
+                    ## Share the default `vagrant` folder
+                    node.vm.synced_folder ".", "/vagrant", disabled: true
+                    node.vm.synced_folder ".", "/vagrant", type: :nfs, :mount_options => ['nolock,vers=3,udp,noatime']
+                    #node.bindfs.bind_folder ".", "/vagrant"
+
+                    # Run the provisioning script(s)
+                    if node_provision != nil then
+                        node_provision.each do |provision_script|
+                            puts " - provision " << provision_script
+                            node.vm.provision :shell, path: provision_script
+                        end
+                    else
+                            puts " - no provision script(s) defined"
+                    end
+
+                end
+
+            # update the IP address for the next instance
+            ipaddr = ipaddr.succ
+        end
+    end
+end
+
