@@ -25,8 +25,10 @@ Usage:
 
 ## Create virtual machines with Vagrant
 
-Install [qemu-kvm](https://wiki.debian.org/KVM), [vagrant](https://www.vagrantup.com/downloads.html) and the libvirt provider (qemu + kvm):
+Install [qemu-kvm](https://wiki.debian.org/KVM), [vagrant](https://www.vagrantup.com/downloads.html) and the libvirt provider (qemu + kvm).
+Debian Stretch may need this [workaround](https://gist.github.com/robled/070e1922816bbe983623#gistcomment-1978432).
     
+    $ sudo apt-get install libvirt-daemon-system
     $ wget https://releases.hashicorp.com/vagrant/1.9.1/vagrant_1.9.1_x86_64.deb
     $ sudo dpkg --install vagrant_1.8.6_x86_64.deb
     $ vagrant plugin install vagrant-libvirt
