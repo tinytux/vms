@@ -10,10 +10,9 @@ fi
 
 export DEBIAN_FRONTEND=noninteractive
 
-# disable ipv6 - apt-get sometimes tries to connect to IPv6 addresses...
 # re-enable eth0 interface names
-echo "Disabling IPv6 after next reboot..."
-sed -e '/^GRUB_CMDLINE_LINUX_DEFAULT=/s/"$/ ipv6.disable=1 net.ifnames=0 biosdevname=0"/g' -i /etc/default/grub
+echo "Disabling 'consistent network device naming'..."
+sed -e '/^GRUB_CMDLINE_LINUX_DEFAULT=/s/"$/  net.ifnames=0 biosdevname=0"/g' -i /etc/default/grub
 update-grub
 
 echo "Updating the system, this takes some time..."
@@ -21,7 +20,7 @@ apt-get clean
 apt-get -y update >/dev/null
 apt-get -y upgrade >/dev/null
 apt-get -y dist-upgrade >/dev/null
-apt-get -y install perl-modules mc vim
+apt-get -y install perl-modules mc vim bash-completion python-optcomplete
 
 echo "base image build date: $(date)" >/etc/builddate.txt
 
