@@ -10,6 +10,6 @@ fi
 
 DEBIAN_FRONTEND=noninteractive
 
-apt-get -y install slim gnome-common 
+apt-get -y install task-gnome-desktop arandr
 
 

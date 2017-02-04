@@ -10,5 +10,12 @@ fi
 
 DEBIAN_FRONTEND=noninteractive
 
-apt-get -y install spice-vdagent xserver-xorg-video-qxl xserver-xorg xinit xfonts-100dpi xfonts-scalable xfonts-75dpi xinput
+
+if [[ ! -e /usr/sbin/spice-vdagentd ]]; then
+    if [[ "$(dmesg | grep 'Hypervisor detected')" == *"Hypervisor detected: KVM"* ]]; then
+        echo "KVM with X11 detected: installing spice/qxl"
+        apt-get -y install spice-vdagent xserver-xorg-video-qxl xserver-xorg xinit xfonts-100dpi xfonts-scalable xfonts-75dpi xinput
+    fi
+fi
+
 

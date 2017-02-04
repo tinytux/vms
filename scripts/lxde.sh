@@ -10,6 +10,6 @@ fi
 
 DEBIAN_FRONTEND=noninteractive
 
-apt-get -y install lightdm lxde gedit open-vm-tools open-vm-tools-desktop
+apt-get -y install lightdm lxde gedit
 
 
