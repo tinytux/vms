@@ -18,4 +18,9 @@ else
     sed -r 's/(\b[0-9]{1,3}\.){3}[0-9]{1,3}:3142\b'/${DEFAULT_GATEWAY}:3142/ -i /etc/apt/apt.conf
 fi
 
+apt-get update
+
+if [[ -e /etc/builddate.txt ]]; then
+    cat /etc/builddate.txt
+fi
 

@@ -1,2 +1,4 @@
 .vagrant
 *.tar.gz
+files/teamcity/notexist
+files/teamcity/repair

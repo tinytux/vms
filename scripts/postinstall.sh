@@ -23,3 +23,5 @@ apt-get -y upgrade >/dev/null
 apt-get -y dist-upgrade >/dev/null
 apt-get -y install perl-modules mc vim
 
+echo "base image build date: $(date)" >/etc/builddate.txt
+

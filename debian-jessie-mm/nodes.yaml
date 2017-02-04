@@ -2,7 +2,7 @@
 - startip: 192.168.20.101
   count: 2
   name: a
-  box: debian-jessie-qemu
+  box: debian-jessie
   ram: 512
   cpu: 1
   provision:
@@ -11,7 +11,7 @@
 - startip: 192.168.20.105
   count: 1
   name: b
-  box: debian-jessie-qemu
+  box: debian-jessie
   ram: 512
   cpu: 1
   provision:
@@ -19,7 +19,7 @@
 - startip: 192.168.20.121
   count: 2
   name: c
-  box: debian-jessie-qemu
+  box: debian-jessie
   ram: 512
   cpu: 1
   provision:

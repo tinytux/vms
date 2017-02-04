@@ -2,29 +2,26 @@
 - startip: 192.168.20.101
   count: 1
   name: master
-  box: debian-jessie-qemu
+  box: debian-jessie
   ram: 1024
   cpu: 2
   provision:
      - ../scripts/update-apt-proxy.sh
      - ../scripts/java-openjdk-7-headless.sh
      - ../scripts/teamcity.sh
-     - ../scripts/cleanup.sh
 - startip: "192.168.20.102"
   count: 2
   name: slave
-  box: debian-jessie-qemu
+  box: debian-jessie
   ram: 1024
   cpu: 1
   provision:
      - ../scripts/update-apt-proxy.sh
-     - ../scripts/cleanup.sh
 - startip: 192.168.20.20
   count: 1
   name: vcs
-  box: debian-jessie-qemu
+  box: debian-jessie
   ram: 1024
   cpu: 1  
   provision:
      - ../scripts/update-apt-proxy.sh
-     - ../scripts/cleanup.sh

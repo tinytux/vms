@@ -44,7 +44,19 @@ Vagrant.configure(2) do |config|
                     node.vm.box = node_box
                     node.vm.hostname = node_hostname
                     puts "" << node_hostname << " (" <<  node_ip << ")"
-                    node.vm.network "private_network", ip: node_ip
+                    node.vm.network "private_network", ip: node_ip, :libvirt__forward_mode => "none", :libvirt__dhcp_enabled => false
+
+                    node.vm.provider :libvirt do |libvirt|
+
+                        libvirt.memory = node_ram
+                        libvirt.cpus = node_cpu
+                        libvirt.cpu_mode = 'host-passthrough'
+
+                        libvirt.uri = 'qemu+unix:///system'
+                        libvirt.driver = "kvm"
+                        libvirt.keymap = "de-ch"
+                        libvirt.storage_pool_name = "default"
+                    end
 
                     config.vm.provider "vmware_workstation" do |vmware|
                         vmware.gui = true
