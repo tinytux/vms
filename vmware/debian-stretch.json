@@ -7,10 +7,10 @@
     "hostname": "debian",
     "username": "vagrant",
     "password": "vagrant",
-    "isofilename":     "debian-stretch-DI-rc1-amd64-netinst.iso",
-    "isourl":          "http://cdimage.debian.org/cdimage/stretch_di_rc1/amd64/iso-cd/",
-    "isochecksumtype": "md5",
-    "isochecksum":     "210b651eb89c451e8c01868ecb16c0ea",
+    "isofilename":     "debian-stretch-DI-rc2-amd64-netinst.iso",
+    "isourl":          "http://cdimage.debian.org/cdimage/stretch_di_rc2/amd64/iso-cd/",
+    "isochecksumtype": "sha512",
+    "isochecksum":     "e722baf8748dae3f4bffc770cce7f061dd8b5ba0baa1d12cc3764c5fdfe1cef6d8627bd6f04e504a52479f583615985dc2cac2615ae9de4812287486ed8b6f91",
     "http_proxy":       "{{env `http_proxy`}}",
     "https_proxy":      "{{env `https_proxy`}}",
     "ftp_proxy":        "{{env `ftp_proxy`}}",
@@ -73,6 +73,7 @@
     "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
     "scripts": [
       "../scripts/postinstall.sh",
+      "../scripts/open-vm-tools.sh",
       "../scripts/vagrant.sh",
       "../scripts/cleanup.sh",
       "../scripts/zerofill.sh"
