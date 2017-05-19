@@ -1,0 +1,23 @@
+version: '2'
+
+services:  
+  teamcity-server:
+    build: teamcity-server/
+    volumes:
+      - './teamcity-server/data:/data/teamcity_server/datadir'
+      - './teamcity-server/log:/data/teamcity/logs'
+    ports:
+      - 8111:8111
+    environment:
+      - TEAMCITY_SERVER_MEM_OPTS="-Xmx2048m"
+
+  teamcity-agent:
+    build: teamcity-agent/
+    volumes:
+      - './teamcity-agent/conf:/data/teamcity_agent/conf'
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - SERVER_URL=teamcity-server:8111
+    depends_on:
+      - teamcity-server
+
