@@ -80,3 +80,38 @@ Usage:
     $ cd debian-jessie 
     $ vagrant up
 
+
+### CloudSigma
+
+ - Control CloudSigma nodes
+ 
+Configuration:
+
+    $ cat ~/.cloudsigma.conf 
+    $ # https://github.com/cloudsigma/pycloudsigma
+    $ api_endpoint = https://zrh.cloudsigma.com/api/2.0/
+    $ ws_endpoint = wss://direct.zrh.cloudsigma.com/websocket
+    $ username = myusername 
+    $ password = mypassword
+
+
+Usage:
+
+    $ cd cloudsigma
+    $ ./cloud.py --help
+    usage: cloud.py [-h] [-ls] [--create CREATE] [--start START] [--stop STOP]
+                     [--destroy DESTROY]
+     
+    CloudSigma remote node utility
+     
+    optional arguments:
+      -h, --help         show this help message and exit
+      -ls, --list        List all servers.
+      --create CREATE    Create and start a server.
+      --start START      Start a server.
+      --stop STOP        Stop a server.
+      --destroy DESTROY  Destroy (permanently delete) a server and all associated
+                         disks. Use with care!
+
+
+
