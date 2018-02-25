@@ -3,7 +3,7 @@
 # Build a new VM from scratch, download packer.io binaries if required.
 #
 
-PACKER_VERSION="0.12.2"
+PACKER_VERSION="1.1.3"
 
 if [[ $# -ne 1 ]]; then
     echo "usage: $0 [vmtemplate.json]"
@@ -105,6 +105,7 @@ cp -v ./http/${vm_name}-preseed.template ./http/${vm_name}-preseed.cfg || exit $
 if [[ ! -z  ${APT_PROXY} ]]; then
     echo "Using proxy ${APT_PROXY} in preseed file..."
     sed -e "s#^.*d-i mirror/http/proxy.*#d-i mirror/http/proxy string ${APT_PROXY}#" -i ./http/${vm_name}-preseed.cfg
+    sed -e "s#^.*choose-mirror-bin.*mirror/http/proxy.*#choose-mirror-bin mirror/http/proxy ${APT_PROXY}#" -i ./http/${vm_name}-preseed.cfg
 else
     echo "No proxy detected."
 fi
