@@ -104,7 +104,7 @@ fi
 cp -v ./http/${vm_name}-preseed.template ./http/${vm_name}-preseed.cfg || exit $?
 if [[ ! -z  ${APT_PROXY} ]]; then
     echo "Using proxy ${APT_PROXY} in preseed file..."
-    sed -e "s#^.*d-i mirror/http/proxy.*#d-i mirror/http/proxy string ${APT_PROXY}#" -i ./http/${vm_name}-preseed.cfg
+    sed -e "s#^.*d-i.*mirror/http/proxy.*#d-i mirror/http/proxy string ${APT_PROXY}#" -i ./http/${vm_name}-preseed.cfg
     sed -e "s#^.*choose-mirror-bin.*mirror/http/proxy.*#choose-mirror-bin mirror/http/proxy ${APT_PROXY}#" -i ./http/${vm_name}-preseed.cfg
 else
     echo "No proxy detected."
@@ -114,8 +114,7 @@ fi
 grep -qie "qemuargs" ${FILE} 2>/dev/null
 if [[ $? -eq 0 ]]; then
     echo "qemu boot disk: /dev/vda"
-    sed -e "s#^.*d-i grub-installer/bootdev .*#d-i grub-installer/bootdev  string /dev/vda#" -i ./http/${vm_name}-preseed.cfg
-    sed -e "s#^.*d-i grub-installer/choose_bootdev .*#d-i grub-installer/choose_bootdev  select /dev/vda#" -i ./http/${vm_name}-preseed.cfg
+    sed -e "s#/dev/sda#/dev/vda#" -i ./http/${vm_name}-preseed.cfg
 else
     echo "vmware boot disk: /dev/sda"
 fi

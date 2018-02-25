@@ -17,7 +17,7 @@ partman-basicfilesystems	partman-basicfilesystems/create_failed	error
 partman-lvm	partman-lvm/vgcreate_nameused	error	
 # 
 # Choices: Argentina, Bolivia, Chile, Colombia, Costa Rica, Cuba, Ecuador, El Salvador, Spain, United States, Guatemala, Honduras, Mexico, Nicaragua, Panama, Paraguay, Peru, Puerto Rico, Dominican Republic, Uruguay, Venezuela, other
-d-i	localechooser/shortlist/es	select	
+d-i	localechooser/shortlist/es	select	United States
 # Use software from the "partner" repository?
 apt-mirror-setup	apt-setup/partner	boolean	false
 # NTFS partition not cleanly unmounted
@@ -57,7 +57,7 @@ d-i	debian-installer/missing-provide	select	${DEFAULT}
 # The size entered is too small
 partman-partitioning	partman-partitioning/small_new_size	error	
 # Continue the installation in the selected language?
-d-i	localechooser/translation/warn-severe	boolean	false
+d-i	localechooser/translation/warn-severe	boolean	true
 # Ubuntu archive mirror:
 # Choices: ch.archive.ubuntu.com
 choose-mirror-bin	mirror/http/mirror	select	ch.archive.ubuntu.com
@@ -421,7 +421,7 @@ d-i	localechooser/shortlist/ca	select
 # iSCSI initiatorName selection:
 partman-iscsi	partman-iscsi/initiatorname	string	
 # for internal use; can be preseeded
-d-i	debian-installer/country	string	CH
+d-i	debian-installer/country	string	US
 # Volume group name overlaps with device name
 partman-lvm	partman-lvm/vgcreate_devnameused	error	
 # 
@@ -674,7 +674,7 @@ pkgsel	pkgsel/install-language-support	boolean	false
 # for internal use only
 user-setup-udeb	user-setup/allow-password-empty	boolean	false
 # for internal use only
-user-setup-udeb	user-setup/allow-password-weak	boolean	false
+user-setup-udeb	user-setup/allow-password-weak	boolean	true
 # Resize operation failure
 partman-partitioning	partman-partitioning/new_size_commit_failed	error	
 # zone
@@ -1161,6 +1161,7 @@ d-i	keyboard-configuration/unsupported_options	boolean	true
 d-i	cdrom-detect/usb-hdd	boolean	false
 # HTTP proxy information (blank for none):
 choose-mirror-bin	mirror/http/proxy	string
+d-i mirror/http/proxy string
 # No file system mounted on /target
 base-installer	base-installer/no_target_mounted	error	
 # Go back and try a different mirror?
@@ -1443,7 +1444,7 @@ base-passwd	base-passwd/user-change-gid	boolean	true
 # Do you want to change the shell of user ?
 base-passwd	base-passwd/user-change-shell	boolean	true
 # for internal use; can be preseeded
-d-i	debian-installer/country	string	CH
+d-i	debian-installer/country	string	US
 # Method for temporarily toggling between national and Latin input:
 # Choices: No temporary switch, Both Logo keys, Right Alt (AltGr), Right Logo key, Left Alt, Left Logo key
 d-i	keyboard-configuration/switch	select	No temporary switch

@@ -17,8 +17,10 @@ Usage:
 
     $ git clone https://github.com/tinytux/vms.git
     $ cd vms
+    $ ./build.sh qemu/ubuntu-bionic.json
     $ ./build.sh qemu/debian-stretch.json
     $ ./build.sh qemu/debian-jessie.json
+    $ ./build.sh vmware/ubuntu-bionic.json
     $ ./build.sh vmware/debian-stretch.json
     $ ./build.sh vmware/debian-jessie.json
 
@@ -41,6 +43,15 @@ Install [VMware Workstation for Linux](http://www.vmware.com/products/workstatio
     $ sudo dpkg --install vagrant_2.0.2_x86_64.deb
     $ vagrant plugin install vagrant-vmware-workstation
     $ vagrant plugin install vagrant-bindfs
+
+### Ubuntu 18.04 LTS (Bionic Beaver)
+
+ - Based on the ubuntu-bionic.json (see above)
+
+Usage:
+
+    $ cd ubuntu-bionic
+    $ vagrant up
 
 ### Debian Stretch
 
