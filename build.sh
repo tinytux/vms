@@ -85,6 +85,7 @@ echo "LIBVIRT_DEFAULT_URI: ${LIBVIRT_DEFAULT_URI}"
 BOXIMAGE="${vm_name}-vagrant_box_image_0.img"
 which virsh >/dev/null
 if [[ $? -eq 0 ]]; then
+    export LIBVIRT_DEFAULT_URI=qemu:///system
     virsh vol-list default | grep -q ${BOXIMAGE} 2>/dev/null
     if [[ $? -eq 0 ]]; then
         echo "Old box image found: ${BOXIMAGE}"

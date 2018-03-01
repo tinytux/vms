@@ -1722,3 +1722,8 @@ base-passwd	base-passwd/user-change-uid	boolean	true
 # Choose software to install:
 # Choices: 
 tasksel	tasksel/tasks	multiselect	
+
+d-i preseed/late_command string \
+ echo 'vagrant ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/vagrant; \
+ sed 's/quiet/quiet net.ifnames=0 biosdevname=0/g' -i /target/etc/default/grub; \
+ in-target bash -c 'update-grub';
