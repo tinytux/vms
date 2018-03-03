@@ -74,6 +74,7 @@
     "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
     "scripts": [
       "../scripts/postinstall.sh",
+      "../scripts/ack-grep.sh",
       "../scripts/open-vm-tools.sh",
       "../scripts/vagrant.sh",
       "../scripts/cleanup.sh",

@@ -20,7 +20,7 @@ apt-get clean
 apt-get -y update >/dev/null
 apt-get -y upgrade >/dev/null
 apt-get -y dist-upgrade >/dev/null
-apt-get -y install perl-modules mc vim bash-completion python-optcomplete
+apt-get -y install perl-modules mc vim bash-completion python-optcomplete nmap
 
 echo "base image build date: $(date)" >/etc/builddate.txt
 
