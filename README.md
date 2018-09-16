@@ -31,16 +31,16 @@ Install [qemu-kvm](https://wiki.debian.org/KVM), [vagrant](https://www.vagrantup
 Debian Stretch may need this [workaround](https://gist.github.com/robled/070e1922816bbe983623#gistcomment-1978432).
     
     $ sudo apt-get install libvirt-daemon-system
-    $ wget https://releases.hashicorp.com/vagrant/2.0.2/vagrant_2.0.2_x86_64.deb
-    $ sudo dpkg --install vagrant_2.0.2_x86_64.deb
+    $ wget https://releases.hashicorp.com/vagrant/2.1.5/vagrant_2.1.5_x86_64.deb
+    $ sudo dpkg --install vagrant_2.1.5_x86_64.deb
     $ vagrant plugin install vagrant-libvirt
     $ vagrant plugin install vagrant-bindfs
 
 
 Install [VMware Workstation for Linux](http://www.vmware.com/products/workstation-for-linux.html) (license required), [vagrant-vmware-workstation](https://www.vagrantup.com/vmware/) plugin (license required) and [vagrant](https://www.vagrantup.com/downloads.html):
     
-    $ wget https://releases.hashicorp.com/vagrant/2.0.2/vagrant_2.0.2_x86_64.deb
-    $ sudo dpkg --install vagrant_2.0.2_x86_64.deb
+    $ wget https://releases.hashicorp.com/vagrant/2.1.5/vagrant_2.1.5_x86_64.deb
+    $ sudo dpkg --install vagrant_2.1.5_x86_64.deb
     $ vagrant plugin install vagrant-vmware-workstation
     $ vagrant plugin install vagrant-bindfs
 
