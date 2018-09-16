@@ -7,10 +7,10 @@
     "hostname": "ubuntu",
     "username": "vagrant",
     "password": "vagrant",
-    "isofilename":     "bionic-server-amd64.iso",
-    "isourl":          "http://cdimage.ubuntu.com/ubuntu-server/daily/current/",
-    "isochecksumtype": "none",
-    "isochecksum":     "e722baf8748dae3f4bffc770cce7f061dd8b5ba0baa1d12cc3764c5fdfe1cef6d8627bd6f04e504a52479f583615985dc2cac2615ae9de4812287486ed8b6f91",
+    "isofilename":     "ubuntu-18.04.1-server-amd64.iso",
+    "isourl":          "http://cdimage.ubuntu.com/ubuntu/releases/18.04/release/",
+    "isochecksumtype": "sha256",
+    "isochecksum":     "a5b0ea5918f850124f3d72ef4b85bda82f0fcd02ec721be19c1a6952791c8ee8",
     "http_proxy":       "{{env `http_proxy`}}",
     "https_proxy":      "{{env `https_proxy`}}",
     "ftp_proxy":        "{{env `ftp_proxy`}}",
@@ -20,6 +20,7 @@
   [
     {
       "type": "vmware-iso",
+      "guest_os_type": "ubuntu-64",
       "disk_size": "{{user `disksize`}}",
       "format": "vmx",
       "vm_name": "{{user `vmname`}}",
