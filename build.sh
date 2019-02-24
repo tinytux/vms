@@ -3,7 +3,7 @@
 # Build a new VM from scratch, download packer.io binaries if required.
 #
 
-PACKER_VERSION="1.3.1"
+PACKER_VERSION="1.3.4"
 
 if [[ $# -ne 1 ]]; then
     echo "usage: $0 [vmtemplate.json]"
